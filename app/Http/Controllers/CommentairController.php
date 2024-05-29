@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Commentaire;
 use Illuminate\Http\Request;
 
 class CommentairController extends Controller
@@ -28,6 +29,53 @@ class CommentairController extends Controller
         // Redirige vers la page de détails de l'article avec un message de succès
         return redirect()->route('article.details', $articleId)
             ->with('success', 'Commentaire ajouté avec succès.');
+    }
+
+    public function destroy($id)
+    {
+
+        $commentaire = Commentaire::findOrFail($id);
+        $commentaire->delete();
+
+        return back();
+
+        // return redirect('/articles')->with('success', 'Commentaire Supprime avec succès');
+
+    }
+
+    public function edit($id)
+    {
+
+        $commentaire = Commentaire::findOrFail($id);
+
+        return view('commentaires.edit', compact('commentaire'));
+
+    }
+
+
+    /**
+     * Enregistre la modification dans la base de données
+     */
+    public function update(Request $request, $id)
+    {
+        // Valider les champs de la requête : 'nom_complet_auteur' et 'contenu' sont requis
+        $request->validate([
+            'nom_complet_auteur' => 'required',
+            'contenu' => 'required',
+        ]);
+
+        // Trouver le commentaire correspondant à l'ID fourni
+        $commentaire = Commentaire::find($id);
+
+        // Mettre à jour les champs du commentaire avec les nouvelles données de la requête
+        $commentaire->nom_complet_auteur = $request->nom_complet_auteur;
+        $commentaire->contenu = $request->contenu;
+
+        // Enregistrer les modifications dans la base de données
+        $commentaire->save();
+
+        // Rediriger l'utilisateur vers la page précédente avec un message de succès
+        return redirect()->route('article.details', $commentaire->id_article);
     }
 
 }

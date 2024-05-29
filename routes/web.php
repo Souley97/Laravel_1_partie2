@@ -36,5 +36,9 @@ Route::controller(CommentairController::class)->group( function (){
 
     Route::post('articles/{article}/comments','store')->name('comments.store');
 
+    Route::delete('/commentaire/{id}', 'destroy')->name( 'commentaire.delete' );
+    Route::get('/commentaire/{id}/edit', 'edit')->name( 'commentaire.edit' );
+    Route::put('/commentaire/{id}', 'update')->name( 'commentaire.update' );
+
 });
 
