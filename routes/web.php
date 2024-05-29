@@ -10,6 +10,18 @@ Route::get('/', function () {
 Route::controller(ArticleController::class)->group(function () {
 
     //Affichage des articles
-        Route::get('articles', 'index')->name('article.index');
+    Route::get('articles', 'index')->name('article.index');
 
-    });
+    // ajoute d'une article
+    Route::get('/article/create', 'create')->name('article.create');
+    Route::post('article/store', 'store')->name('article.store');
+
+    //Affichage d'une article
+    Route::get('/article/{id}', 'show')->name('article.detais');
+
+    // modifier d'une article
+    Route::get('/article/{id}/edit', 'edit')->name( 'article.edit' );
+    Route::put('/article/{id}', 'update')->name( 'article.update' );
+
+
+});
