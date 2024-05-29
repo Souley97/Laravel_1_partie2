@@ -69,6 +69,30 @@
             <h1>{{ $article->nom }}</h1>
             <p>{{ $article->description }}</p>
 
+
+    <h2>Commentaires</h2>
+    @foreach($commentairs as $commentair)
+        <div>
+            <h4>{{ $commentair->nom_complet_auteur }}</h4>
+            <p>{{ $commentair->contenu }}</p>
+            <small>{{ $commentair->created_at->format('d/m/Y H:i') }}</small>
+        </div>
+    @endforeach
+
+    <h3>Ajouter un commentaire</h3>
+    <form action="{{ route('comments.store', $article->id) }}" method="POST">
+        @csrf
+        <div>
+            <label for="nom_complet_auteur">Nom :</label>
+            <input type="text" id="nom_complet_auteur" name="nom_complet_auteur" required>
+        </div>
+        <div>
+            <label for="contenu">Commentaire :</label>
+            <textarea id="contenu" name="contenu" required></textarea>
+        </div>
+        <button type="submit">Ajouter</button>
+    </form> 
+
     </main>
 
 

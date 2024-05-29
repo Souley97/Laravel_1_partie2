@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Commentaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -59,8 +60,10 @@ class ArticleController extends Controller
 
     public function show($id)
     {
+        $commentairs = Commentaire::all()->where('id_article', $id);
+
         $article = article::findOrFail($id);
-        return view('articles.show', compact('article'));
+        return view('articles.show', compact('article','commentairs'));
     }
 
     public function edit($id)
@@ -111,7 +114,15 @@ class ArticleController extends Controller
             ->with('success', 'Article mis à jour avec succès.');
     }
 
+    public function destroy($id)
+    {
 
+        $article = article::findOrFail($id);
+        $article->delete();
+
+        return redirect('/articles')->with('success', 'article Supprime avec succès');
+
+    }
 
 
 
