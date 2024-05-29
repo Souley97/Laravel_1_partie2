@@ -10,6 +10,10 @@ Route::get('/', function () {
 Route::controller(ArticleController::class)->group(function () {
 
     //Affichage des articles
-        Route::get('articles', 'index')->name('article.index');
+    Route::get('articles', 'index')->name('article.index');
 
-    });
+    // ajoute d'une article
+    Route::get('/article/create', 'create')->name('article.create');
+    Route::post('article/store', 'store')->name('article.store');
+
+});
