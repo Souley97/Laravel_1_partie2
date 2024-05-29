@@ -76,6 +76,11 @@
             <h4>{{ $commentair->nom_complet_auteur }}</h4>
             <p>{{ $commentair->contenu }}</p>
             <small>{{ $commentair->created_at->format('d/m/Y H:i') }}</small>
+            <form action="{{ url('commentaire/' . $commentair->id) }}" method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
         </div>
     @endforeach
 
@@ -91,7 +96,7 @@
             <textarea id="contenu" name="contenu" required></textarea>
         </div>
         <button type="submit">Ajouter</button>
-    </form> 
+    </form>
 
     </main>
 

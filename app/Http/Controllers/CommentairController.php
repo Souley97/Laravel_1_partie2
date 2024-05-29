@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Commentaire;
 use Illuminate\Http\Request;
 
 class CommentairController extends Controller
@@ -28,6 +29,18 @@ class CommentairController extends Controller
         // Redirige vers la page de détails de l'article avec un message de succès
         return redirect()->route('article.details', $articleId)
             ->with('success', 'Commentaire ajouté avec succès.');
+    }
+
+    public function destroy($id)
+    {
+
+        $commentaire = Commentaire::findOrFail($id);
+        $commentaire->delete();
+
+        return back();
+
+        // return redirect('/articles')->with('success', 'Commentaire Supprime avec succès');
+
     }
 
 }
