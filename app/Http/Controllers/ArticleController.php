@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -58,12 +59,59 @@ class ArticleController extends Controller
 
     public function show($id)
     {
-
-
         $article = article::findOrFail($id);
-        return view('articles.details', compact('article'));
+        return view('articles.show', compact('article'));
+    }
+
+    public function edit($id)
+    {
+
+        $article = Article::findOrFail($id);
+
+        return view('articles.edit', compact('article'));
 
     }
+
+
+    /**
+     * Enregistre la modification dans la base de données
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nom' => 'required',
+            'description' => 'required',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            // 'a_la_une' => 'boolean',
+
+        ]);
+
+        $article = Article::find($id);
+
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($article->image) {
+                Storage::delete('public/blog/' . $article->image);
+            }
+
+            // Stocker la nouvelle image
+            $chemin_image = $request->file('image')->store('public/blog');
+            $image = basename($chemin_image);
+            $article->image = $image;
+        }
+
+        $article->nom = $request->nom;
+        $article->description = $request->description;
+        // $article->a_la_une = $request->a_la_une;
+
+
+        $article->save();
+
+        return redirect()->route('article.index')
+            ->with('success', 'Article mis à jour avec succès.');
+    }
+
+
 
 
 

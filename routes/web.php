@@ -19,5 +19,9 @@ Route::controller(ArticleController::class)->group(function () {
     //Affichage d'une article
     Route::get('/article/{id}', 'show')->name('article.detais');
 
+    // modifier d'une article
+    Route::get('/article/{id}/edit', 'edit')->name( 'article.edit' );
+    Route::put('/article/{id}', 'update')->name( 'article.update' );
+
 
 });
