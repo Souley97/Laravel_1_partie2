@@ -56,4 +56,15 @@ class ArticleController extends Controller
             ->with('success', 'Article créé avec succès.');
     }
 
+    public function show($id)
+    {
+
+
+        $article = article::findOrFail($id);
+        return view('articles.details', compact('article'));
+
+    }
+
+
+
 }

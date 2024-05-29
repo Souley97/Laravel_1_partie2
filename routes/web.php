@@ -16,4 +16,8 @@ Route::controller(ArticleController::class)->group(function () {
     Route::get('/article/create', 'create')->name('article.create');
     Route::post('article/store', 'store')->name('article.store');
 
+    //Affichage d'une article
+    Route::get('/article/{id}', 'show')->name('article.detais');
+
+
 });
