@@ -43,4 +43,39 @@ class CommentairController extends Controller
 
     }
 
+    public function edit($id)
+    {
+
+        $commentaire = Commentaire::findOrFail($id);
+
+        return view('commentaires.edit', compact('commentaire'));
+
+    }
+
+
+    /**
+     * Enregistre la modification dans la base de données
+     */
+    public function update(Request $request, $id)
+    {
+        // Valider les champs de la requête : 'nom_complet_auteur' et 'contenu' sont requis
+        $request->validate([
+            'nom_complet_auteur' => 'required',
+            'contenu' => 'required',
+        ]);
+
+        // Trouver le commentaire correspondant à l'ID fourni
+        $commentaire = Commentaire::find($id);
+
+        // Mettre à jour les champs du commentaire avec les nouvelles données de la requête
+        $commentaire->nom_complet_auteur = $request->nom_complet_auteur;
+        $commentaire->contenu = $request->contenu;
+
+        // Enregistrer les modifications dans la base de données
+        $commentaire->save();
+
+        // Rediriger l'utilisateur vers la page précédente avec un message de succès
+        return redirect()->route('article.details', $commentaire->id_article);
+    }
+
 }
